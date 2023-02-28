@@ -156,3 +156,46 @@ using rqt to:
 > - replaying the bag file: `ros2 bag play <bag_file_name>`
 >
 > tutorial based on *turtlesim*: https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Recording-And-Playing-Back-Data/Recording-And-Playing-Back-Data.html#tasks
+
+### Client libraries
+> A ROS workspace is a directory with a particular structure. Commonly there is a `/src` subdirectory. Inside that subdirectory is where the source code of ROS packages will be located. Typically the directory starts otherwise empty. [`colcon`](https://github.com/colcon) is an iteration on the ROS build tools `catkin_make`, `catkin_make_isolated`, `catkin_tools` and `ament_tools`. more: [Dirk Thomas - A universal build tool](https://design.ros2.org/articles/build_tool.html)
+> 
+> `colcon` does out of source builds. By default it will create the following directories as peers of the `src` directory:
+> - `/build` - *where intermediate files are stored. For each package a subfolder will be created in which*
+> - `/install` - *where each package will be installed, by default each package will be installed into a separate subdirectory.*
+> - `/log` - *contains various logging information about each colcon invocation*
+>
+> *In general, it is recommended to use an overlay when you plan to iterate on a small number of packages, rather than putting all of your packages into the same workspace.*
+>
+>  Since build types such as ament_cmake do not support the concept of the devel space and require the package to be installed, colcon supports the option --symlink-install. This allows the installed files to be changed by changing the files in the source space for faster iteration.
+> 
+> `colcon build --symlink-install`
+>
+> To run tests for the packages we just built, run the following: `colcon test`
+>
+> When colcon has completed building successfully, the output will be in the install directory. Before you can use any of the installed executables or libraries, you will need to add them to your path and library paths: `. install/setup.bash`
+>
+> - `colcon_cd` * allows you to quickly change the current working directory of your shell to the directory of a package., ex: `colcon_cd some_ros_package`*, [docs](https://colcon.readthedocs.io/en/released/user/installation.html#quick-directory-changes)
+> 
+> demo: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html#try-a-demo 
+
+### Creating a...
+#### workspace
+> *A workspace is a directory containing ROS 2 packages. Before using ROS 2, it’s necessary to source your ROS 2 installation workspace in the terminal you plan to work in. This makes ROS 2’s packages available for you to use in that terminal.*
+>
+> *You also have the option of sourcing an “overlay” – a secondary workspace where you can add new packages without interfering with the existing ROS 2 workspace that you’re extending, or “underlay”. Your underlay must contain the dependencies of all the packages in your overlay. Packages in your overlay will override packages in the underlay. It’s also possible to have several layers of underlays and overlays, with each successive overlay using the packages of its parent underlays.*
+>
+> practices:
+> - create a new directory for every new workspace. The name doesn’t matter, but it is helpful to have it indicate the purpose of the workspace. 
+> - put any packages in your workspace into the `src` directory. 
+> 
+> *Before building the workspace, you need to resolve package dependencies. You may have all the dependencies already, but best practice is to check for dependencies every time you clone. You wouldn’t want a build to fail after a long wait because of missing dependencies.*
+>
+> Using overlays is recommended for working on a small number of packages, so you don’t have to put everything in the same workspace and rebuild a huge workspace on every iteration.
+>
+> - `colcon build` - build your packages 
+>
+> demo: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html#tasks
+
+### ... package
+> 
