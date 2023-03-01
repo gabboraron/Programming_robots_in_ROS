@@ -1,5 +1,6 @@
 # Programming robots in ROS
-*related repo (lang :hungary:): [robotrendszerek programozása/beadando](https://github.com/gabboraron/robotrendszerek_programozasa/tree/main/beadando)*
+- *related repo (lang :hungary:): [robotrendszerek programozása/beadando](https://github.com/gabboraron/robotrendszerek_programozasa/tree/main/beadando)*
+- *related YouTube video: [ROS2 Tutorial - ROS2 Humble 2H50 [Crash Course]](https://www.youtube.com/watch?v=Gg25GfA456o)*
 
 > ROS introduction, setting up the development environment. Implement ROS packages in Python. Basic ROS communication, implementing publishers and subscribers. Principles of robotics, programming a simulated robot in joint and workspace. Roslaunch, ROS parameter server. Acquisition and processing of sensory data in ROS. Programming da Vinci surgical robot in simulated environment. Programming humanoid robot. In simulated environment. Define custom messages. ROS service and ROS action.
 
@@ -220,5 +221,19 @@ using rqt to:
 > 
 > Putting packages in a workspace is especially valuable because you can build many packages at once by running `colcon build` in the *workspace root*. Otherwise, you would have to build each package individually.
 > 
+> `ros2 pkg create --build-type ament_python <package_name>`
+>
 > tutorial based on *turtlesim*: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html#tasks
 
+### simple publisher and subscriber
+> Nodes are executable processes that communicate over the ROS graph. The example used here is a simple “talker” and “listener” system; one node publishes data and the other subscribes to the topic so it can receive that data.
+>
+> in c++ you should include:
+> - `#include "rclcpp/rclcpp.hpp"` - allows you to use the most common pieces of the ROS 2 system
+> - `#include "std_msgs/msg/string.hpp"` - built-in message type you will use to publish data 
+> 
+> 
+> 
+> `c++` code [available here](https://github.com/ros2/examples/tree/humble/rclcpp/topics), detailed [description of the code here](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#examine-the-code)
+>
+> 
