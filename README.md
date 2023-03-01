@@ -1,4 +1,6 @@
 # Programming robots in ROS
+*related repo (lang :hungary:): [robotrendszerek programozása/beadando](https://github.com/gabboraron/robotrendszerek_programozasa/tree/main/beadando)*
+
 > ROS introduction, setting up the development environment. Implement ROS packages in Python. Basic ROS communication, implementing publishers and subscribers. Principles of robotics, programming a simulated robot in joint and workspace. Roslaunch, ROS parameter server. Acquisition and processing of sensory data in ROS. Programming da Vinci surgical robot in simulated environment. Programming humanoid robot. In simulated environment. Define custom messages. ROS service and ROS action.
 
 10 years of ROS: https://www.youtube.com/watch?v=mDwZ21Zia8s
@@ -180,7 +182,7 @@ using rqt to:
 > demo: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html#try-a-demo 
 
 ### Creating a...
-#### workspace
+#### ...workspace
 > *A workspace is a directory containing ROS 2 packages. Before using ROS 2, it’s necessary to source your ROS 2 installation workspace in the terminal you plan to work in. This makes ROS 2’s packages available for you to use in that terminal.*
 >
 > *You also have the option of sourcing an “overlay” – a secondary workspace where you can add new packages without interfering with the existing ROS 2 workspace that you’re extending, or “underlay”. Your underlay must contain the dependencies of all the packages in your overlay. Packages in your overlay will override packages in the underlay. It’s also possible to have several layers of underlays and overlays, with each successive overlay using the packages of its parent underlays.*
@@ -197,5 +199,26 @@ using rqt to:
 >
 > demo: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html#tasks
 
-### ... package
+#### ...package
+> *A package can be considered a container for your ROS 2 code. If you want to be able to install your code or share it with others, then you’ll need it organized in a package. With packages, you can release your ROS 2 work and allow others to build and use it easily.*
+>
+> *Package creation in ROS 2 uses ament as its build system and colcon as its build tool. You can create a package using either CMake or Python, which are officially supported, though other build types do exist.*
+>
+> minimum required contents:
+>
+> > ***CMake***
+> > - package.xml -  meta information about the package
+> > - CMakeLists.txt -  describes how to build the code within the package
+>
+> > ***Python***
+> > - package.xml -  meta information about the package
+> > - setup.py - instructions for how to install the package
+> > - setup.cfg - required when a package has executables
+> > - /<package_name> - directory with the same name as your package, used by ROS 2 tools to find your package, contains `__init__.py`
+>
+> A single workspace can contain as many packages as you want, each in their own folder. You can also have packages of different build types in one workspace. Best practice is to have a `/src` folder within your workspace, and to create your packages in there. This keeps the top level of the workspace “clean”.
 > 
+> Putting packages in a workspace is especially valuable because you can build many packages at once by running `colcon build` in the *workspace root*. Otherwise, you would have to build each package individually.
+> 
+> tutorial based on *turtlesim*: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html#tasks
+
