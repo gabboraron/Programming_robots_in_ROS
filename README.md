@@ -228,12 +228,40 @@ using rqt to:
 ### simple publisher and subscriber
 > Nodes are executable processes that communicate over the ROS graph. The example used here is a simple “talker” and “listener” system; one node publishes data and the other subscribes to the topic so it can receive that data.
 >
-> in c++ you should include:
+> In `c++` you should include:
 > - `#include "rclcpp/rclcpp.hpp"` - allows you to use the most common pieces of the ROS 2 system
+>   - [`rclpp`](https://github.com/ros2/rclcpp) - provides the standard C++ API for interacting with ROS 2.
 > - `#include "std_msgs/msg/string.hpp"` - built-in message type you will use to publish data 
+```C++
+    class MinimalPublisher : public rclcpp::Node  //creates the node class MinimalPublisher by inheriting from rclcpp::Node
+    {
+      public:
+        MinimalPublisher()  //public constructor 
+        : Node("minimal_publisher"), count_(0)  //names the node minimal_publisher and initializes count_ to 0
+        {
+          publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);   //the publisher is initialized with the String message type, the topic name topic, and the required queue size 
+                                                                                     // queue size limit number of messages in the event of a backup
+          timer_ = this->create_wall_timer(
+          500ms, std::bind(&MinimalPublisher::timer_callback, this));   //timer_callback function will be executed twice a second
+        }
+
+      private:
+        void timer_callback()   //this is where the message data is set and the messages are actually published
+        {
+          auto message = std_msgs::msg::String();
+          message.data = "Hello, world! " + std::to_string(count_++);
+          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());   //this macro ensures every published message is printed to the console.
+          publisher_->publish(message);
+        }
+        
+        //declaration of the timer, publisher, and counter
+        rclcpp::TimerBase::SharedPtr timer_;
+        rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+        size_t count_;
+    };
+```
 > 
-> 
-> 
-> `c++` code [available here](https://github.com/ros2/examples/tree/humble/rclcpp/topics), detailed [description of the code here](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#examine-the-code)
+> In `Python`...
 >
-> 
+> - [`c++` code available here](https://github.com/ros2/examples/tree/humble/rclcpp/topics), detailed [description of the code available here](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#examine-the-code)
+> - [`python` code available here](), detailed [description of the code available here]()
