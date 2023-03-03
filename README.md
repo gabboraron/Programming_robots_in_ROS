@@ -231,6 +231,11 @@ using rqt to:
 > **note:**
 > - for this you should change metadata in `CMakeLists.txt` - [Publisher](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#cmakelists-txt), [Subscriber](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#id2)
 > - add dependencies in `package.xml` - *[example](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#add-dependencies)*
+>
+> More about this at:
+> - http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
+> - https://github.com/ros2torial/ros2_basics
+> - https://youtu.be/Gg25GfA456o?t=2378
 > 
 > #### Publisher
 > ##### In `c++` 
