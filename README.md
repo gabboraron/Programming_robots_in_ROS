@@ -225,10 +225,16 @@ using rqt to:
 >
 > tutorial based on *turtlesim*: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html#tasks
 
-### simple publisher and subscriber
+### Simple publisher and subscriber
 > Nodes are executable processes that communicate over the ROS graph. The example used here is a simple “talker” and “listener” system; one node publishes data and the other subscribes to the topic so it can receive that data.
 >
-> In `c++` you should include:
+> **note:**
+> - for this you should change metadata in `CMakeLists.txt` - [Publisher](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#cmakelists-txt), [Subscriber](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#id2)
+> - add dependencies in `package.xml` - *[example](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#add-dependencies)*
+> 
+> #### Publisher
+> ##### In `c++` 
+> you should include:
 > - `#include "rclcpp/rclcpp.hpp"` - allows you to use the most common pieces of the ROS 2 system
 >   - [`rclpp`](https://github.com/ros2/rclcpp) - provides the standard C++ API for interacting with ROS 2.
 > - `#include "std_msgs/msg/string.hpp"` - built-in message type you will use to publish data 
@@ -261,7 +267,105 @@ using rqt to:
     };
 ```
 > 
-> In `Python`...
+> ##### In `Python`...
+> In Python you shold include:
+> - `import rclpy`
+> - `from rclpy.node import Node`
+> - `from std_msgs.msg import String`
 >
+```Python
+class MinimalPublisher(Node):   #inherits from (or is a subclass of) `Node`
+
+    def __init__(self):
+        super().__init__('minimal_publisher')   # calls the Node class’s constructor and gives it your node name -> this case `minimal_publisher`
+        self.publisher_ = self.create_publisher(String, 'topic', 10)   # declares that the node publishes messages of type String (imported from the std_msgs.msg module), over a topic named "topic"; the “queue size” is 10
+        ## Queue size is a required QoS (quality of service) setting that limits the amount of queued messages if a subscriber is not receiving them fast enough.
+        
+        
+        timer_period = 0.5  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)   #a callback to execute every 0.5 seconds
+                                                                            #creates a message with the counter value appended, and publishes it to the console
+        self.i = 0   #a counter used in the callback.
+
+    def timer_callback(self):
+        msg = String()
+        msg.data = 'Hello World: %d' % self.i
+        self.publisher_.publish(msg)
+        self.get_logger().info('Publishing: "%s"' % msg.data)   #this publishes the data on the console 
+        self.i += 1
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    minimal_publisher = MinimalPublisher()
+
+    rclpy.spin(minimal_publisher)   # its callbacks are called
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    minimal_publisher.destroy_node()
+    rclpy.shutdown()
+```
+>
+> #### Subscriber
+> ##### In `c++`
+> nearly identical to the publisher
+> 
+```c++
+class MinimalSubscriber : public rclcpp::Node
+{
+  public:
+    MinimalSubscriber()
+    : Node("minimal_subscriber")
+    {
+      subscription_ = this->create_subscription<std_msgs::msg::String>(   //There is no timer because the subscriber simply responds whenever data is published to the "topic" topic.
+      "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));   //the topic name and message type used by the publisher and subscriber must match 
+    }
+
+  private:
+    void topic_callback(const std_msgs::msg::String & msg) const   // receives the string message data published over the topic
+    {
+      RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg.data.c_str());   //imply writes the message data to the console using the RCLCPP_INFO macro.
+    }
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+};
+```
+> ##### In `Python`
+```Python
+class MinimalSubscriber(Node):
+
+    def __init__(self):
+        super().__init__('minimal_subscriber')
+        self.subscription = self.create_subscription(
+            String,
+            'topic',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
+
+    def listener_callback(self, msg):
+        self.get_logger().info('I heard: "%s"' % msg.data)
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    minimal_subscriber = MinimalSubscriber()
+
+    rclpy.spin(minimal_subscriber)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    minimal_subscriber.destroy_node()
+    rclpy.shutdown()
+```
+> to do at the end:
+> - check if everything is installed: `rosdep install -i --from-path src --rosdistro humble -y`
+> - build the package: `colcon build --packages-select cpp_pubsub`
+> 
+> Original sources:
 > - [`c++` code available here](https://github.com/ros2/examples/tree/humble/rclcpp/topics), detailed [description of the code available here](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html#examine-the-code)
-> - [`python` code available here](), detailed [description of the code available here]()
+> - [`python` code available here](https://raw.githubusercontent.com/ros2/examples/humble/rclpy/topics/minimal_publisher/examples_rclpy_minimal_publisher/publisher_member_function.py), detailed [description of the code available here](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html#tasks)
