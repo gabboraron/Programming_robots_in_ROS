@@ -226,6 +226,9 @@ using rqt to:
 > tutorial based on *turtlesim*: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html#tasks
 
 ### Simple publisher and subscriber
+
+***The same can be solved via [rospy](http://wiki.ros.org/rospy) like this: [rospy/Overview/Publishers and Subscribers](http://wiki.ros.org/rospy/Overview/Publishers%20and%20Subscribers)***
+
 > Nodes are executable processes that communicate over the ROS graph. The example used here is a simple “talker” and “listener” system; one node publishes data and the other subscribes to the topic so it can receive that data.
 >
 > **note:**
