@@ -1,6 +1,7 @@
 # Programming robots in ROS
 - *related repo (lang :hungary:): [robotrendszerek programozása/beadando](https://github.com/gabboraron/robotrendszerek_programozasa/tree/main/beadando)*
 - *related YouTube video: [ROS2 Tutorial - ROS2 Humble 2H50 [Crash Course]](https://www.youtube.com/watch?v=Gg25GfA456o)*
+- *robotics academy:* https://jderobot.github.io/RoboticsAcademy/
 
 > ROS introduction, setting up the development environment. Implement ROS packages in Python. Basic ROS communication, implementing publishers and subscribers. Principles of robotics, programming a simulated robot in joint and workspace. Roslaunch, ROS parameter server. Acquisition and processing of sensory data in ROS. Programming da Vinci surgical robot in simulated environment. Programming humanoid robot. In simulated environment. Define custom messages. ROS service and ROS action.
 
